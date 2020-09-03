@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#f2f2f2"
+    android:layout_marginTop="2pt"
+    android:layout_marginBottom="2pt">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardview_home"
+        android:layout_gravity="center"
+        app:cardCornerRadius="3pt"
+        app:cardMaxElevation="1pt"
+        app:cardElevation="0.5pt"
+        android:background="#ffffff"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/cardview_image"
+                app:cardCornerRadius="2pt"
+                app:cardMaxElevation="0.5pt"
+                app:cardElevation="0.3pt"
+                android:layout_centerHorizontal="true"
+                android:background="#ffffff"
+                android:layout_marginTop="4pt"
+                android:layout_marginHorizontal="4pt">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="140pt"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/image_item"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_launcher_background"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title"
+                android:id="@+id/title"
+                android:textSize="8pt"
+                android:gravity="center_vertical"
+                android:layout_below="@+id/cardview_image"
+                android:layout_marginVertical="2pt"
+                android:layout_marginHorizontal="4pt"/>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
