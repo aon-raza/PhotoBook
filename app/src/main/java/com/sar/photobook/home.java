@@ -1,5 +1,6 @@
 package com.sar.photobook;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -45,7 +46,12 @@ public class home extends AppCompatActivity {
     private AppDatabase appDatabase;
 
     private AppCompatButton seeMoreBtn;
-    private int totalLoaded;
+
+    private int totalLoaded = 0;
+    private int toBeLoadedNext = 20;
+
+    RecyclerView recyclerViewMyAds;
+    LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,9 @@ public class home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         toolbar = findViewById(R.id.toolbar);
+        recyclerViewMyAds = findViewById(R.id.recyclerViewAlbum);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerViewMyAds.setLayoutManager(layoutManager);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -69,16 +78,28 @@ public class home extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(this);
 
         seeMoreBtn = findViewById(R.id.see_more_btn);
-//        seeMoreBtn.setVisibility(View.GONE);
+        seeMoreBtn.setVisibility(View.GONE);
+
+        recyclerViewMyAds.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(layoutManager.findLastCompletelyVisibleItemPosition() == totalLoaded-1 &&
+                        appDatabase.albumDao().getAll().size() > 0){
+                    seeMoreBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         if (appDatabase.albumDao().getAll().size() > 0){
-            totalLoaded = 20;
-            postsList = appDatabase.albumDao().getAll().subList(0,totalLoaded);
+            postsList = appDatabase.albumDao().getAll().subList(0,toBeLoadedNext);
             initRecyclerViewAlbum();
 
 //            Toast.makeText(home.this, "from room" + appDatabase.albumDao().getAll().size(), Toast.LENGTH_SHORT).show();
         }
         else {
+            seeMoreBtn.setVisibility(View.GONE);
             if (isOnline()){
                 progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progress.setIndeterminate(true);
@@ -95,8 +116,8 @@ public class home extends AppCompatActivity {
         seeMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalLoaded += 20;
-                postsList.add(appDatabase.albumDao().getAll().get(totalLoaded));
+                seeMoreBtn.setVisibility(View.GONE);
+                postsList = appDatabase.albumDao().getAll().subList(0,totalLoaded + toBeLoadedNext);
                 initRecyclerViewAlbum();
             }
         });
@@ -168,13 +189,18 @@ public class home extends AppCompatActivity {
     }
 
     private void initRecyclerViewAlbum(){
-        RecyclerView recyclerViewMyAds = findViewById(R.id.recyclerViewAlbum);
-        LinearLayoutManager layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewMyAds.setLayoutManager(layoutManager4);
 
         recyclerViewAdapterAlbum adapter = new recyclerViewAdapterAlbum(this,postsList);
         recyclerViewMyAds.setItemAnimator( new DefaultItemAnimator());
         recyclerViewMyAds.setAdapter(adapter);
+
+        if (totalLoaded > 0){
+            recyclerViewMyAds.getLayoutManager().scrollToPosition(totalLoaded -1);
+        }
+        else{
+            recyclerViewMyAds.getLayoutManager().scrollToPosition(totalLoaded);
+        }
+        totalLoaded = postsList.size();
         progress.dismiss();
     }
 }
