@@ -1,9 +1,23 @@
 package com.sar.photobook.models;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "albums")
 public class album {
+
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
+
+    @ColumnInfo(name = "title")
     private String title;
+
+    @ColumnInfo(name = "photo_url")
     private String photoUrl;
 
+    @Ignore
     public album() {
     }
 

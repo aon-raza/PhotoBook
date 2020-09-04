@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.sar.photobook.models.album;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,12 +43,14 @@ public class recyclerViewAdapterAlbum extends RecyclerView.Adapter<recyclerViewA
 
         album post = list.get(i);
 
-            Glide.with(mContext)
-                    .asBitmap()
-                    .load(post.getPhotoUrl())
-                    .into(viewHolder.image_item);
+//        Glide.with(mContext)
+//                .asBitmap()
+//                .load(post.getPhotoUrl())
+//                .into(viewHolder.image_item);
 
-            viewHolder.title.setText(post.getTitle());
+        Picasso.get().load(post.getPhotoUrl()).into(viewHolder.image_item);
+
+        viewHolder.title.setText(post.getTitle());
 
     }
 

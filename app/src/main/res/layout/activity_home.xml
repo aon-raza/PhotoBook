@@ -24,4 +24,16 @@
         android:clipToPadding="false"
         android:orientation="vertical"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/see_more_btn"
+        android:text="@string/see_more"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="#80000000"
+        android:layout_marginTop="4pt"
+        android:paddingVertical="8pt" />
+
 </RelativeLayout>
